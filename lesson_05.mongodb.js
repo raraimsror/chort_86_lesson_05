@@ -1,118 +1,98 @@
-use("lesson_05_cohort_86");
+//1. Создание базы данных
+use("lesson_06_chort_86_EL");
 
-// Создаем коллекцию animal c 6 новыми документами
-// db.animal.insertMany([
-//   { kind: "tiger", weight: 300, name: "Alan", predatory: true },
-//   { kind: "penguin", weight: 2, name: "Kovalsky", predatory: true },
-//   { kind: "chicken", weight: 1, name: "Cipa", predatory: false },
-//   { kind: "shark", weight: 400, name: "Sharp", predatory: false },
-//   { kind: "shark", weight: 450, name: "John", predatory: false },
-//   { kind: "panda", weight: 200, name: "Po", predatory: false },
-// ]);
-
-// UPDATE
-
-// 1. $set
-// - изменим predotary у всех акул на true
-// db.animal.updateMany({ kind: "shark" }, { $set: { predatory: true } });
-
-// 2. $inc - увеличивает значения на указанную величину
-// db.animal.updateMany({}, { $inc: { weight: 3 } });
-
-// 3. $rename - переименовывает ключи
-// db.animal.updateMany({}, { $rename: { weight: "weightKg" } });
-
-// 4. Добавление нового св-ва с помощью $set
-// db.animal.updateMany(
-//   { predatory: true },
-//   { $set: { food: ["fish", "squid"] } }
-// );
-
-// 5. $push - добавляет в массив новый элемент
-// db.animal.updateOne(
-//   { kind: "tiger", name: "Alan" },
-//   {
-//     $push: { food: "wolf" },
-//   }
-// );
-
-// 6. $unset - удаление св-ва и значения обьекта
-// db.animal.updateOne(
-//   { kind: "chicken", name: "Cipa" },
-//   { $unset: { predatory: "" } },
-// );
-
-// 7. Изменение по id
-// db.animal.updateOne(
-//   { _id: ObjectId('6ace6192c7eb3f6b2275d4cd') },
-//   { $set: { name: "Kovalsky 007" } }
-// );
-
-//////////////////////////////////////////////////////////////////////////
-// DELETE
-// 1. deleteOne()
-// db.animal.deleteOne({ _id: ObjectId('6ace6192c7eb3f6b2275d4ce') });
-
-// 2. deleteMany() - удаление нескольких элементов
-// db.animal.insertMany([
-//   {
-//     kind: "t-rex",
-//     weightKg: 1500,
-//   },
-//   {
-//     kind: "t-rex",
-//     weightKg: 1800,
-//   },
-// ]);
-
-// db.animal.deleteMany({ kind: "t-rex" });
-
-// Получение всех животных
-// db.animal.find();
-
-///////////////////////////////////////////////////////////////////////////////
-// Agregate
-// db.kids.insertMany([
-//   { name: "John", age: 5, gender: "boy" },
-//   { name: "Anna", age: 6, gender: "girl" },
-//   { name: "Leyla", age: 4, gender: "girl" },
-//   { name: "Frieda", age: 3, gender: "boy" },
-//   { name: "Bob", age: 5, gender: "boy" },
-// ]);
-
-// - поиск среднего возраста мальчиков и девочек
-// db.kids.aggregate([
-//   {
-//     $group: {
-//       _id: "$gender",
-//       averageAge: {
-//         $avg: "$age",
-//       },
-//     },
-//   },
-// ]);
-
-// - поиск минимального возраста мальчиков и девочек
-// db.kids.aggregate([
-//   {
-//     $group: {
-//       _id: "$gender",
-//       minimumAge: {
-//         $min: "$age",
-//       },
-//     },
-//   },
-// ]);
-
-// - поиск максимального возраста мальчиков и девочек
-
-db.kids.aggregate([
+/*
+// 2. Создание коллекции
+db.users.insertMany([
   {
-    $group: {
-      _id: "$gender",
-      maximumAge: {
-        $max: "$age",
-      },
-    },
+    firstName: "Ivan",
+    lastName: "Ivanov",
+    age: 22,
+    job: "Developer",
+    hobby: "Football",
+  },
+  {
+    firstName: "Anna",
+    lastName: "Petrova",
+    age: 19,
+    job: "Designer",
+    hobby: "Drawing",
+  },
+  {
+    firstName: "Sergey",
+    lastName: "Sidorov",
+    age: 25,
+    job: "Developer",
+    hobby: "Chess",
+  },
+  {
+    firstName: "Maria",
+    lastName: "Smirnova",
+    age: 31,
+    job: "Marketer",
+    hobby: "Running",
+  },
+  {
+    firstName: "Alexey",
+    lastName: "Kozlov",
+    age: 28,
+    job: "Analyst",
+    hobby: "Football",
+  },
+  {
+    firstName: "Elena",
+    lastName: "Morozova",
+    age: 20,
+    job: "Designer",
+    hobby: "Dancing",
+  },
+  {
+    firstName: "Dmitry",
+    lastName: "Volkov",
+    age: 35,
+    job: "Manager",
+    hobby: "Fishing",
+  },
+  {
+    firstName: "Olga",
+    lastName: "Lebedeva",
+    age: 23,
+    job: "Developer",
+    hobby: "Drawing",
+  },
+  {
+    firstName: "Pavel",
+    lastName: "Pavlov",
+    age: 40,
+    job: "Director",
+    hobby: "Chess",
+  },
+  {
+    firstName: "Natalia",
+    lastName: "Sokolova",
+    age: 26,
+    job: "Marketer",
+    hobby: "Dancing",
   },
 ]);
+*/
+
+
+// 1. Найдите всех пользователей, у которых профессия (job) — "Developer", и выведите только их имена (firstName)
+//  и увлечения (hobby).
+//db.users.find({ job: "Developer" }, { firstName: 1, hobby: 1, _id: 0 });
+
+// 2. Найдите всех пользователей, которые увлекаются либо "Football", либо "Dancing", и при этом их возраст (age)
+//  строго больше 21 года.
+//db.users.find({ hobby: { $in: ["Football", "Dancing"] },  age: { $gt: 21 }}, {firstName: 1, hobby: 1, age: 1, _id: 0});
+
+// 3. Выведите топ-3 самых старых сотрудников. Результат должен быть отсортирован от самого старшего к младшему.
+//db.users.find().sort({ age: -1 }).limit(3);
+
+// 4. Найдите средний, минимальный и максимальный возраст среди всех пользователей в базе данных.
+//db.users.find().sort({ age: -1 }).limit(1);
+//db.users.find().sort({ age: 1 }).limit(1);
+
+// 5. Сгруппируйте пользователей по их профессии (job), посчитайте количество человек в каждой профессии
+// и отсортируйте полученные группы от большего количества к меньшему.
+
